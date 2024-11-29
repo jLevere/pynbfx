@@ -1,0 +1,31 @@
+[project]
+name = "pynbfx"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+
+dependencies = []
+
+[dependency-groups]
+dev = [
+    {include-group = "test"},
+    {include-group = "lint"},
+    {include-group = "typing"},
+]
+
+test = [
+    "pytest>=8.3.3"
+]
+
+lint = [
+    "ruff>=0.7.2"
+]
+
+typing = [
+    "mypy>=1.13.0"
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
