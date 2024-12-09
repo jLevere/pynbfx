@@ -8,7 +8,7 @@
     nixpkgs,
   }: let
     supportedSystems = ["x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin"];
-    pythonVersion = "python312";
+
     forEachSupportedSystem = f:
       nixpkgs.lib.genAttrs supportedSystems (system:
         f {
@@ -19,11 +19,11 @@
       default = pkgs.mkShell {
         venvDir = ".venv";
         packages = with pkgs;
-          [${pythonVersion}]
-          ++ (with pkgs.${pythonVersion} Packages; [
+          [python312]
+          ++ (with pkgs.python312Packages; [
             pip
-            uv
             venvShellHook
+            uv
           ]);
       };
     });
