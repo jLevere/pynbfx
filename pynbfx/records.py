@@ -680,9 +680,6 @@ def element_parser() -> Parser:
                 if peaked_record_type % 2 == 1:  # is an end record so return root
                     return Result.ok(stream, root)
 
-        if peaked_record_type not in ELEMENT_TYPES:
-            return Result.err(stream, f"Unexpected record type: {peaked_record_type}")
-
         childeren_parser = many_while_prefix(
             element_parser(),
             byte_peak(),
