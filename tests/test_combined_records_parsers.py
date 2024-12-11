@@ -329,10 +329,10 @@ xmlns:s="http://www.w3.org/2003/05/soap-envelope">
         result = element_parser()(self.bodyStream)
         self.assertTrue(result.is_ok())
 
-        with open("dump.txt", "w+") as f:
-            f.write(self.bodyString.replace("\n", ""))
-            f.write("\n")
-            f.write(self.elem_to_str(result.unwrap()))
+        # with open("dump.txt", "w+") as f:
+        #     f.write(self.bodyString.replace("\n", ""))
+        #     f.write("\n")
+        #     f.write(self.elem_to_str(result.unwrap()))
 
         self.assertEqual(
             self.bodyString.replace("\n", ""), self.elem_to_str(result.unwrap())
@@ -340,14 +340,7 @@ xmlns:s="http://www.w3.org/2003/05/soap-envelope">
 
     def test_end_element(self):
         result = element_parser()(self.endElementsStream)
-
         self.assertTrue(result.is_ok())
-
-        with open("dump.txt", "w+") as f:
-            f.write(self.endElementsString.replace("\n", ""))
-            f.write("\n")
-            f.write(self.elem_to_str(result.unwrap()))
-
         self.assertEqual(
             self.endElementsString.replace("\n", ""), self.elem_to_str(result.unwrap())
         )
