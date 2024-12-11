@@ -23,13 +23,10 @@ from .combinators import (
     byte_parser,
     byte_peak,
     signed_int_x_parser,
-    static_str,
     int31_parser,
     dict_parser,
-    many,
     many_while_prefix,
     string_parser,
-    failure,
 )
 
 
@@ -623,7 +620,7 @@ def element_parser() -> Parser:
         record_type = result.unwrap()
 
         if record_type == END_TAG:
-            return Result.ok(stream, "End Elem tag")
+            return Result.ok(stream, "End record")
         # TODO: this end tags should be treated as an error
         # if seen here.  if they are seen farther down, like in attributes
         # or text then should just return root. See [MC-NBFX]: 2.3.1
@@ -661,11 +658,9 @@ def element_parser() -> Parser:
             )
         root: Element = result.unwrap()
 
+        # Peek ahead to determine if we've reached the end of input
         if not (result := byte_peak()(stream)):
-            # Getting to end of input is tricky.  It could be mangled input,
-            # or it could actually be the end.
-            # all we know is that we have a root, so we should assume
-            # it is the end and return the root.
+            # If we reach the end of input, assume we've completed the element parsing
             return Result.ok(stream, root)
 
         peaked_record_type = result.unwrap()
@@ -685,12 +680,17 @@ def element_parser() -> Parser:
             byte_peak(),
             lambda value: value in list(ELEMENT_TYPES),
         )
-        if not (result := childeren_parser(stream)):
-            return result.aggregate(Result.err(stream, f"{childeren_parser.desc()}"))
 
-        for i in result.unwrap():
-            if isinstance(i, Element):
-                root.append(i)
+        while (result := childeren_parser(stream)) and result.value:
+            for i in result.value:
+                if isinstance(i, Element):
+                    root.append(i)
+
+        # if the next thing is an end record, clear it preemptivly
+        # TODO: figure out a better way to do this, its painful
+        if result := byte_peak()(stream):
+            if result.unwrap() == END_TAG:
+                byte_parser()(stream)
 
         return Result.ok(stream, root)
 
