@@ -1,16 +1,10 @@
-
 from io import BytesIO
 
 from typing import Callable, Any
 
 
-
 from .parser import Parser
 from .result import Result
-
-
-
-
 
 
 """
@@ -77,7 +71,9 @@ def sequence(*parsers: Parser, **kw_parsers: Parser) -> Parser:
         return success([])
 
     if parsers and kw_parsers:
-        raise ValueError("Use either positional arguments or keyword arguments with seq, not both")
+        raise ValueError(
+            "Use either positional arguments or keyword arguments with seq, not both"
+        )
 
     if parsers:
 
@@ -218,6 +214,14 @@ def failure(value: Any) -> Parser:
         return Result.err(stream, value)
 
     return Parser(failure_fn)
+
+
+def not_implmented(value: Any) -> Parser:
+    def not_implmented_fn(stream: BytesIO) -> Result:
+        raise NotImplementedError
+        return Result.err(stream, value)
+
+    return Parser(not_implmented_fn)
 
 
 """
@@ -366,7 +370,9 @@ def string_parser() -> Parser:
         length = result.unwrap()
         s = result.stream.read(length)
         if len(s) != length:
-            return Result.err(stream, f"Wong sized string, expected {len(s)} got {length}, value: {s}")
+            return Result.err(
+                stream, f"Wong sized string, expected {len(s)} got {length}, value: {s}"
+            )
         return Result.ok(stream, s.decode("utf-8"))
 
     return Parser(string_parser_fn)
@@ -398,7 +404,9 @@ def dict_parser(dictionary: dict[int, str]) -> Parser:
     def dict_parser_fn(stream: BytesIO) -> Result:
         result = byte_parser()(stream)
         if result.is_err():
-            return result.aggregate(Result.err(stream, f"{dict_parser(dictionary).desc()}"))
+            return result.aggregate(
+                Result.err(stream, f"{dict_parser(dictionary).desc()}")
+            )
 
         value = result.unwrap()
         s = dictionary.get(value)
