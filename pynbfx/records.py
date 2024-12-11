@@ -27,6 +27,7 @@ from .combinators import (
     dict_parser,
     many_while_prefix,
     string_parser,
+    not_implmented,
 )
 
 
@@ -96,7 +97,8 @@ def float_text_parser() -> Parser:
 
         return Result.ok(stream, formatted_value)
 
-    return Parser(float_text_fn)
+    # return Parser(float_text_fn)
+    return not_implmented("")
 
 
 def double_text_parser() -> Parser:
@@ -121,7 +123,8 @@ def double_text_parser() -> Parser:
 
         return Result.ok(stream, formatted_value)
 
-    return Parser(double_text_fn)
+    # return Parser(double_text_fn)
+    return not_implmented("")
 
 
 def decimal_text_parser() -> Parser:
@@ -143,7 +146,8 @@ def decimal_text_parser() -> Parser:
         decimal_str = str(dec).rstrip("0").rstrip(".")
         return Result.ok(stream, decimal_str)
 
-    return Parser(decimal_text_fn)
+    # return Parser(decimal_text_fn)
+    return not_implmented("")
 
 
 def datetime_text_parser() -> Parser:
@@ -242,19 +246,19 @@ def bytes32_text_parser() -> Parser:
 def start_list_text_parser() -> Parser:
     """StartListText Record 0xA4"""
 
-    return success("")
+    return not_implmented("")
 
 
 def end_list_text_parser() -> Parser:
     """EndListText Record 0xA6"""
 
-    return success("")
+    return not_implmented("")
 
 
 def empty_text_parser() -> Parser:
     """EmptyText Record 0xA8"""
 
-    return success("")
+    return not_implmented("")
 
 
 def dictionary_text_parser() -> Parser:
@@ -301,7 +305,8 @@ def time_span_text_parser() -> Parser:
         else:
             return Result.ok(stream, f"{hours:02}:{minutes:02}:{seconds:02}")
 
-    return Parser(time_span_text_fn)
+    # return Parser(time_span_text_fn)
+    return not_implmented("")
 
 
 def uuid_text_parser() -> Parser:
