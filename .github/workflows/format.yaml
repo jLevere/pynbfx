@@ -1,0 +1,26 @@
+name: Format with ruff
+on:
+  push:
+    paths:
+      - "**.py"
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out Repository
+        uses: actions/checkout@v4
+
+      - name: Format with ruff
+        uses: astral-sh/ruff-action@v2
+        with:
+          args: "format"
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "auto formatted with ruff"
