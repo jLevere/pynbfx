@@ -496,7 +496,9 @@ END_INDEX = 0xFFF
 STEP_SIZE = 2
 
 # Populate the dictionary with placeholders for even integers
-DICTIONARY.update({i: f"[[VALUE_0x{i:02X}]]" for i in range(START_INDEX, END_INDEX, STEP_SIZE)})
+DICTIONARY.update(
+    {i: f"[[VALUE_0x{i:02X}]]" for i in range(START_INDEX, END_INDEX, STEP_SIZE)}
+)
 
 # Create an inverted dictionary
 INVERTED_DICT = {v: k for k, v in DICTIONARY.items()}
